@@ -4,7 +4,7 @@ Un script écrit en python et en bash, qui prend en entrée un fichier csv conte
 # Usage Python
   python3 script.py \<cheminVersFichier\>
 # Usage bash
-2- /bin/bash script.sh \<cheminVerFichier\>
+ /bin/bash script.sh \<cheminVerFichier\>
 
 # Email auteur
 true.samsepiol@gmail.com
