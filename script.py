@@ -10,7 +10,7 @@ def usage():
     print("\nUsage:\n\tpython3 " + sys.argv[0] + " <cheminVersFichier>")
     print("\n\tLe fichier doit etre au format CSV")
 
-def generationDiagramme(nomFichier, tailleX, tailleY, titre, labelX, valeursX, valeursY):
+def generationDiagramme(nomFichier, tailleX, tailleY, titre, labelX, valeursX, valeursY, couleur):
 
     nomFichierPdf = nomFichier + ".pdf"
     nomFichierPng = nomFichier + ".png"
@@ -19,10 +19,27 @@ def generationDiagramme(nomFichier, tailleX, tailleY, titre, labelX, valeursX, v
     plt.grid(axis = "x", color = "black", linestyle="--")
     plt.title(titre)
     plt.xlabel(labelX)
+    plt.barh(valeursX, valeursY, color=couleur) # baton horizontal
+    #plt.bar(valeursX, valeursY) # baton verticale
+    plt.savefig(nomFichierPdf)
+    plt.savefig(nomFichierPng)
+
+def generationDiagramme2(nomFichier, tailleX, tailleY, titre, labelX, valeursX, valeursY, valeursY2, couleur):
+
+    nomFichierPdf = nomFichier + ".pdf"
+    nomFichierPng = nomFichier + ".png"
+    # Generation d'un diagramme en baton
+    plt.figure(figsize=(tailleX, tailleY)) 
+    plt.grid(axis = "x", color = "black", linestyle="--")
+    plt.title(titre)
+    plt.xlabel(labelX)
+    plt.barh(valeursX, valeursY2, color=couleur) # superposer deux courbes
     plt.barh(valeursX, valeursY) # baton horizontal
     #plt.bar(valeursX, valeursY) # baton verticale
     plt.savefig(nomFichierPdf)
     plt.savefig(nomFichierPng)
+
+
 
 def traitement(fichier, numero):
     print("Debut de traitement du fichier")
@@ -30,6 +47,7 @@ def traitement(fichier, numero):
     designations = [] 
     benefices    = []
     pourcentages = []
+    prixDachats  = []
     donnees = csv.reader(fichier)
     for ligne in donnees:
         prixDeVente    = int(ligne[3])
@@ -43,9 +61,10 @@ def traitement(fichier, numero):
         designations.append(ligne[0])
         benefices.append(benefice)
         pourcentages.append(pourcentage)
+        prixDachats.append(prixDachat)
 
-    generationDiagramme("beneficeParCasier", 10, 30, "Benefice par casier vendu", "Benefice en FCFA", designations, benefices)
-    generationDiagramme("pourcentageBeneficeParCasier", 10, 30, "Benefice en pourcentage par casier vendu", "Benefice en %", designations, pourcentages)
+    generationDiagramme("pourcentageBeneficeParCasier", 10, 30, "Benefice en pourcentage par casier vendu", "Benefice en %", designations, pourcentages, "orange")
+    generationDiagramme2("prixDachatPlusBeneficeParCasier", 10, 30, "Benefice en pourcentage par casier vendu et prix d'achat jaune", "Prix en FCFA", designations, benefices, prixDachats, "yellow")
     print("Fin de traitement du fichier\n\n")
 
 if __name__ == "__main__":
